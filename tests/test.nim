@@ -46,7 +46,11 @@ suite "leveldb":
 
   setup:
     let env = leveldb_create_default_env()
-    let dbName = $(leveldb_env_get_test_directory(env))
+    let dbName =
+      if getLibVersion() >= (1, 21):
+        $(leveldb_env_get_test_directory(env))
+      else:
+        "/tmp/ldb.test"
     let db = leveldb.open(dbName)
 
   teardown:

@@ -164,7 +164,8 @@ proc open*(path: string, create = true, reuse = true, paranoidChecks = true,
   leveldb_options_set_write_buffer_size(options, writeBufferSize.csize_t)
   leveldb_options_set_block_size(options, blockSize.csize_t)
   leveldb_options_set_max_open_files(options, cast[cint](maxOpenFiles))
-  leveldb_options_set_max_file_size(options, maxFileSize.csize_t)
+  if getLibVersion() >= (1, 21):
+    leveldb_options_set_max_file_size(options, maxFileSize.csize_t)
   leveldb_options_set_block_restart_interval(options,
                                              cast[cint](blockRestartInterval))
   leveldb_options_set_compression(options, cast[cint](compressionType.ord))
